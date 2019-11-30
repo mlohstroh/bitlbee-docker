@@ -1,6 +1,7 @@
 FROM registry.hub.docker.com/library/alpine:3.10
 
-RUN apk --update --upgrade add wget \
+RUN apk --update --upgrade add \
+      wget \
       glib \
       gnutls-dev \
       libgcrypt-dev \
@@ -11,15 +12,14 @@ RUN apk --update --upgrade add wget \
       python3 \
       make \
       build-base \
-      nss
+      nss \
+      git
 
 ENV PYTHON=python3
 
 WORKDIR /app
-
-RUN wget http://get.bitlbee.org/src/bitlbee-3.5.1.tar.gz
-RUN tar -xvf bitlbee-3.5.1.tar.gz
-WORKDIR /app/bitlbee-3.5.1
+RUN git clone https://github.com/mlohstroh/bitlbee bitlbee/
+WORKDIR /app/bitlbee
 
 RUN ./configure --debug=1
 RUN make
